@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!--导入外部配置文件，加入变量properties-->
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <!--开启mybatis支持延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--任何我方法的 调用都会加载该对象的所有属性，否则每个属性都会按需加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!--开启二级缓存， 默认为true-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--配置别名, resultType可以直接写User-->
+    <typeAliases>
+        <package name="cn.lacknb.entity"/>
+    </typeAliases>
+
+    <!--配置环境，默认使用dev-->
+    <environments default="dev">
+
+        <!--设置dev环境-->
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <!--配置数据库连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <!--配置生产环境-->
+        <environment id="prod">
+            <transactionManager type="JDBC"/>
+            <!--配置数据库连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <mappers>
+        <mapper resource="mapper/*Mapper.xml"/>
+    </mappers>
+
+</configuration>
