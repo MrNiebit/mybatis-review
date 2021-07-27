@@ -1,9 +1,3 @@
-/**
- * @(#)User.java, 7月 27, 2021.
- * <p>
- * Copyright 2021 pinghang.com. All rights reserved.
- * PINGHANG.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package cn.lacknb.entity;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <h2></h2>
- * @author niebaohua
+ * @author gitsilence
  * date 2021/7/27
  */
 @Data
@@ -34,6 +28,11 @@ public class User {
      * 性别
      */
     private String gender;
+
+    /**
+     * 朋友
+     */
+    private User friend;
 
     /**
      * 朋友Id

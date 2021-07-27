@@ -10,14 +10,74 @@
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>
         <result property="friendId" column="friend_id"/>
+        <association property="friend" javaType="cn.lacknb.entity.User">
+            <id property="id" column="u2_id"/>
+            <result property="name" column="u2_name"/>
+            <result property="gender" column="u2_gender"/>
+            <result property="friendId" column="u2_friend_id"/>
+        </association>
     </resultMap>
 
+    <sql id="BaseFields">
+        id, name, gender, friend_id
+    </sql>
+
     <insert id="addUser">
-        insert into user (id, name, gender, friend_id)
-        values (#{id}, #{name}, #{gender}, #{friend_id})
+        insert into t_user (id, name, gender, friend_id)
+        values (#{id}, #{name}, #{gender}, #{friendId})
     </insert>
 
     <update id="updateUser">
-
+        update t_user
+        <set>
+            <trim suffixOverrides=",">
+                <if test="name != null and name != ''">
+                    name = #{name},
+                </if>
+                <if test="gender != null and gender != ''">
+                    gender = #{gender},
+                </if>
+                <if test="friendId != null">
+                    friend_id = #{friendId}
+                </if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
     </update>
+
+    <!--这里会重复，所以要起别名. 这个问题要注意下-->
+    <select id="findById" resultMap="BaseMap">
+        select u1.*,
+               u2.id as u2_id,
+               u2.name as u2_name,
+               u2.gender as u2_gender,
+               u2.friend_id as u2_friend_id
+        from t_user u1 left join t_user u2
+        on u1.friend_id = u2.id
+        where u1.id = #{id}
+    </select>
+
+    <resultMap id="plusMap" type="cn.lacknb.entity.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="friendId" column="friend_id"/>
+        <association property="friend" column="friend_id" javaType="cn.lacknb.entity.User"
+                    select="selectByFriendId"/>
+    </resultMap>
+    <select id="findByIdPlus" resultMap="plusMap">
+        select <include refid="BaseFields"/>
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="selectByFriendId" resultMap="BaseMap">
+        select <include refid="BaseFields"/>
+        from t_user
+        where id = #{friend_id}
+    </select>
 </mapper>

@@ -52,7 +52,7 @@
     </environments>
 
     <mappers>
-        <mapper resource="mapper/*Mapper.xml"/>
+        <mapper resource="mapper/UserMapper.xml"/>
     </mappers>
 
 </configuration>
